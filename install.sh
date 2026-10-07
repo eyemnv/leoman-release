@@ -2,7 +2,7 @@
 # LeoMan installer for the pre-built images (no source checkout, nothing is built). Idempotent: re-running it
 # keeps an existing .env and its secrets, and only refreshes the compose files.
 #
-#   curl -fsSL https://raw.githubusercontent.com/eyemnv/leoman-release/main/install.sh | bash
+#   curl -fsSL https://leoman.eyemnv.com/install.sh | bash
 #   scripts/install.sh [--dir ~/leoman] [--expose] [--version 1.0.0] [--registry docker.io/eyemnv] [--no-tls-file]
 #
 #   --dir DIR        install folder (default ~/leoman): docker-compose.yml, .env, secrets/
@@ -410,7 +410,7 @@ install.sh: refusing to run as root.
   Create (or pick) a regular user, give it Docker access, and run the installer as that user:
     sudo useradd -m -s /bin/bash leoman        # or use your own account
     sudo usermod -aG docker leoman             # log out and in again afterwards
-    sudo -iu leoman bash -c 'curl -fsSL https://raw.githubusercontent.com/eyemnv/leoman-release/main/install.sh | bash'
+    sudo -iu leoman bash -c 'curl -fsSL https://leoman.eyemnv.com/install.sh | bash'
 EOF
   exit 2
 fi

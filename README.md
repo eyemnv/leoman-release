@@ -2,7 +2,7 @@
 
 **Sessions that survive the shutdown.**
 
-LeoMan runs AI coding agents such as Claude Code on your own Linux server, behind a simple web page. Close the tab,
+LeoMan runs AI coding agents such as Claude Code (with Codex and Gemini in experimental mode) on your own Linux server, behind a simple web page. Close the tab,
 lose your Wi-Fi or VPN, shut your laptop: the agents keep working, and when you come back everything is still there.
 
 - **Agents that keep running.** Tasks live on the server, not in your terminal.
@@ -15,20 +15,27 @@ lose your Wi-Fi or VPN, shut your laptop: the agents keep working, and when you 
 
 LeoMan is free to use, for personal and commercial purposes, on machines you control (see [LICENSE](LICENSE)).
 
+**Website and guides:** https://leoman.eyemnv.com
+
 ## What you need
 
 - A Linux server or PC (x86-64 or ARM64) with **Docker** and the **Docker Compose v2** plugin.
 - A regular (non-root) user that may use Docker (member of the `docker` group).
-- **Claude Code** installed for that user and signed in once (`claude`). LeoMan uses that sign-in; it does not
-  include Claude Code itself.
+- An **AI coding CLI** installed for that user and signed in once, with your own account. LeoMan does not include one:
+  - **Claude Code (recommended):** every LeoMan safety feature works with it (folder sandbox, approvals in the browser,
+    protected files, self-protection).
+  - **OpenAI Codex or Google Gemini CLI (experimental):** an admin can switch them on for their own agents, but they run
+    without LeoMan's safety checks for now. Full support with the same safety is planned.
 
 ## Install
 
 Run this as the regular user (not root):
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/eyemnv/leoman-release/main/install.sh | bash
+curl -fsSL https://leoman.eyemnv.com/install.sh | bash
 ```
+
+(The same installer is also at `https://raw.githubusercontent.com/eyemnv/leoman-release/main/install.sh`.)
 
 The installer creates `~/leoman` with the settings file (`.env`, random passwords) and prints the next steps and
 your first admin password. Then:
