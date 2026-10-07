@@ -1,3 +1,12 @@
+<p align="center">
+  <a href="https://leoman.eyemnv.com">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://leoman.eyemnv.com/assets/leoman-logo-dark.svg">
+      <img src="https://leoman.eyemnv.com/assets/leoman-logo-light.svg" alt="LeoMan" height="72">
+    </picture>
+  </a>
+</p>
+
 # LeoMan
 
 **Sessions that survive the shutdown.**
