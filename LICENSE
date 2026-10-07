@@ -1,0 +1,113 @@
+LeoMan Freeware License Agreement
+
+Copyright (c) 2026 eyemnv (contact@eyemnv.com). All rights reserved.
+
+This License Agreement ("Agreement") is between you (an individual, or the organization on whose behalf you accept
+it, "you") and eyemnv ("we", "us"). It governs your use of the LeoMan software, including its Docker
+images, the programs and files inside them, the web interface, installation scripts, compose files and
+documentation (together, the "Software"). By downloading, installing or using the Software you accept this
+Agreement. If you do not accept it, do not download, install or use the Software.
+
+1. LICENSE GRANT
+
+Subject to your compliance with this Agreement, we grant you a free of charge, non-exclusive, non-transferable,
+non-sublicensable, revocable license to:
+
+  (a) download the official Docker images of the Software from the locations we publish them at;
+  (b) install and run the Software on computers and servers that you own or control, or that a hosting provider
+      operates on your behalf ("self-hosted"); and
+  (c) use the Software for any personal, internal business or commercial purpose, including letting your employees,
+      contractors and team members use your installation.
+
+Changing configuration settings, environment variables and compose settings in the ways described in the
+documentation is permitted and is not a modification under Section 2.
+
+2. RESTRICTIONS
+
+Except as expressly permitted in Section 1, and except to the extent applicable law gives you a right that cannot be
+limited by contract, you must not:
+
+  (a) modify, adapt, translate, patch or create derivative works of the Software, or build and distribute altered
+      images based on it;
+  (b) reverse engineer, decompile, disassemble or otherwise try to derive the source code, structure or algorithms
+      of the Software;
+  (c) distribute, publish, sell, resell, rent, lease, lend, sublicense or otherwise make the Software or its images
+      available to any third party, including by mirroring the images to a public registry;
+  (d) offer the Software, or a service that is substantially the Software, to third parties as a hosted or managed
+      service;
+  (e) rebrand the Software, or remove, alter or obscure any copyright, trademark, license or attribution notice in
+      it;
+  (f) circumvent any technical limitation, security control or license mechanism in the Software; or
+  (g) use the Software in breach of any applicable law.
+
+Sharing a link to our official download location or installation instructions is not distribution.
+
+3. OWNERSHIP
+
+The Software is licensed, not sold. We and our licensors keep all right, title and interest in and to the Software,
+including all intellectual property rights. "LeoMan" and its logos are our marks; this Agreement grants you no right
+to use them except to refer truthfully to the Software. All rights not expressly granted are reserved.
+
+4. THIRD-PARTY COMPONENTS
+
+The Software includes open-source and other third-party components. Each of them is licensed to you under its own
+license, which is listed in THIRD_PARTY_NOTICES.md and included in the images. To the extent a third-party license
+grants you rights that conflict with this Agreement (for example, the right to obtain source code of, modify or
+redistribute that component), that license governs for that component only. Nothing in this Agreement limits your
+rights under those licenses.
+
+5. AI PROVIDERS AND THIRD-PARTY SERVICES
+
+The Software starts and coordinates AI agent tools and services that are not part of the Software and that you
+obtain, install and sign in to separately (for example Claude Code, Codex CLI, Gemini CLI, or AI provider APIs). You
+are solely responsible for complying with the terms, usage policies and fees of those tools and providers, and for
+the accounts, credentials and keys you configure.
+
+LeoMan is not affiliated with, endorsed by or sponsored by Anthropic, OpenAI or Google. Claude and Claude Code are
+trademarks of Anthropic, PBC. Codex is a trademark of OpenAI. Gemini is a trademark of Google LLC. All other names
+and trademarks are the property of their respective owners and are used only to identify compatible products.
+
+6. YOUR DATA AND YOUR AGENTS
+
+The Software runs on your systems. We do not receive your data through it, except where you choose to send something
+to us. AI agents run by the Software can read, change and delete files and run commands on the machines and folders
+you allow. You are responsible for choosing those permissions, for reviewing the actions you approve, for the
+security of your installation, and for backing up your data.
+
+7. NO WARRANTY
+
+THE SOFTWARE IS PROVIDED "AS IS" AND "AS AVAILABLE", WITHOUT WARRANTY OF ANY KIND. TO THE MAXIMUM EXTENT PERMITTED BY
+APPLICABLE LAW, WE DISCLAIM ALL WARRANTIES, EXPRESS, IMPLIED OR STATUTORY, INCLUDING ANY WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, NON-INFRINGEMENT, ACCURACY, AND THAT THE SOFTWARE WILL BE
+UNINTERRUPTED, SECURE OR ERROR-FREE. WE HAVE NO OBLIGATION TO PROVIDE SUPPORT, MAINTENANCE OR UPDATES.
+
+8. LIMITATION OF LIABILITY
+
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT WILL WE OR OUR LICENSORS BE LIABLE FOR ANY INDIRECT,
+INCIDENTAL, SPECIAL, CONSEQUENTIAL, EXEMPLARY OR PUNITIVE DAMAGES, OR FOR ANY LOSS OF DATA, PROFITS, REVENUE,
+BUSINESS OR GOODWILL, OR COSTS OF SUBSTITUTE GOODS OR SERVICES, ARISING OUT OF OR RELATED TO THIS AGREEMENT OR THE
+SOFTWARE (INCLUDING ANY ACTION TAKEN BY AN AI AGENT RUN THROUGH IT), HOWEVER CAUSED AND UNDER ANY THEORY OF
+LIABILITY, EVEN IF WE HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. OUR TOTAL LIABILITY ARISING OUT OF OR
+RELATED TO THIS AGREEMENT OR THE SOFTWARE WILL NOT EXCEED FIFTY US DOLLARS (USD 50). Some jurisdictions do not allow
+the exclusion or limitation of certain damages; in those jurisdictions our liability is limited to the smallest
+extent the law allows.
+
+9. TERMINATION
+
+This Agreement is effective until terminated. It terminates automatically, without notice, if you breach any of its
+terms. We may also terminate it, or stop offering the Software, at any time. On termination you must stop using the
+Software and delete all copies of it, including its images. Sections 2 to 5 and 7 to 11 survive termination.
+
+10. UPDATES AND CHANGES
+
+We may publish new versions of the Software and of this Agreement. Each version of the Software is governed by the
+version of this Agreement included with it. Continued use of a newer version means you accept the Agreement included
+with that version.
+
+11. GENERAL
+
+This Agreement is the entire agreement between you and us about the Software and replaces any prior understanding.
+If any provision is held unenforceable, it will be enforced to the maximum extent permissible and the rest of the
+Agreement stays in effect. Our failure to enforce a provision is not a waiver. You may not assign this Agreement
+without our prior written consent; we may assign it. You must comply with all applicable export control and
+sanctions laws when using the Software.
