@@ -55,26 +55,51 @@ cd ~/leoman && docker compose pull && docker compose up -d
 
 Open **http://127.0.0.1:6969** and sign in as `admin`. You will be asked to choose your own password.
 
+**Other computers should open LeoMan too?** Install with `--expose` (`curl -fsSL https://leoman.eyemnv.com/install.sh | bash -s -- --expose`).
+LeoMan then uses HTTPS with its own certificate authority, covering this server's addresses and names (the installer
+prints them and the address to open), and other machines may only connect encrypted. Trust the certificate
+authority once per device: open `https://<server>:6969/leoman-ca.crt` and add it to the trusted certificates.
+
 Useful options (`bash -s -- <options>` after the `curl … |`):
 
 | Option | What it does |
 |---|---|
-| `--expose` | Make the web page reachable from other computers (default: this machine only) |
+| `--expose` | Make the web page reachable from other computers, with HTTPS (default: this machine only) |
+| `--http` | With `--expose`: stay on plain HTTP (not encrypted; not recommended) |
 | `--version 1.0.0` | Pin a version instead of `latest` |
 | `--dir /srv/leoman` | Install somewhere other than `~/leoman` |
 | `--workspace /srv/projects` | The folder agents may work in (default `~/leoman-workspaces`) |
 | `--backup-dir /srv/leoman-backups` | Where daily database backups go (default `~/leoman-backups`) |
+| `--https` | Turn on HTTPS with LeoMan's own certificate, covering this server's addresses and names (printed) |
+| `--tls-add-name leoman.example.lan` | Later: add a name or address to the certificate (other machines keep working) |
+| `--tls-renew` | Renew the certificate now (not needed for expiry: LeoMan renews it on its own 30 days before it ends) |
+| `--ca-info` | Show the certificate authority's fingerprint and the names the certificate covers |
 
-**HTTPS on your network:** add `COMPOSE_FILE=docker-compose.yml:compose.release.tls.yml` and `LEOMAN_BIND=0.0.0.0` to
-`~/leoman/.env`, then run `docker compose up -d` again (see the top of `compose.release.tls.yml`).
+**HTTPS for an existing install:** run the installer again with `--https` (it keeps your settings), set
+`LEOMAN_BIND=0.0.0.0` in `~/leoman/.env` if other computers should reach it, then `docker compose up -d`.
+
+**No internet (air-gapped):** carry an offline bundle (`leoman-<version>-offline-<amd64|arm64>.tar.gz`) into the
+network and run `bash install.sh --offline <bundle> --expose` (the `install.sh` inside the bundle). It checks the
+bundle, loads the images, downloads nothing and turns HTTPS on. Other machines: `install.sh --offline <bundle>
+--load-only`. LeoMan does not include an AI model: Claude Code must reach a model service inside your network (for
+example `ANTHROPIC_BASE_URL` to an internal gateway, or private Bedrock / Vertex endpoints).
 
 ## Update
 
+Make a backup first (**System & backups → Backup now**), then:
+
 ```bash
+curl -fsSL https://leoman.eyemnv.com/install.sh | bash -s -- --version <new version>
 cd ~/leoman && docker compose pull && docker compose up -d
 ```
 
-Re-running the installer is safe: it keeps your `.env` and only refreshes the compose files.
+Re-running the installer is safe: it keeps your `.env` and its secrets, refreshes the compose files and pins the
+version. **Settings → About** shows the exact commands. Other machines: **Machines** marks them "Needs update" and
+shows the command for each. Air-gapped servers update with the new offline bundle (`install.sh --offline`).
+To go back: set the previous `LEOMAN_VERSION` in `.env`, restore the backup from before the update, `docker compose up -d`.
+
+Admins see in **Settings → About** whether a newer version exists. The check asks the image registry for the newest
+version number twice a day and sends nothing else. Turn it off there, or with `LEOMAN_UPDATE_CHECK=0` in `.env`.
 
 ## Check the images are genuine (optional)
 
