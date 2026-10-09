@@ -295,6 +295,10 @@ services:
       - ${HOST_HOME:?run scripts/install.sh}/.claude.json:${HOST_HOME:?run scripts/install.sh}/.claude.json
       - ${HOST_HOME:?run scripts/install.sh}/.local/bin:${HOST_HOME:?run scripts/install.sh}/.local/bin:ro
       - ${HOST_HOME:?run scripts/install.sh}/.local/share/claude:${HOST_HOME:?run scripts/install.sh}/.local/share/claude:ro
+      # Codex / Gemini CLI: the standalone installs and their logins live here (~/.local/bin/codex links into
+      # ~/.codex/packages); rw because the CLIs refresh tokens and write sessions. Claude agents can't read them (confine.py).
+      - ${HOST_HOME:?run scripts/install.sh}/.codex:${HOST_HOME:?run scripts/install.sh}/.codex
+      - ${HOST_HOME:?run scripts/install.sh}/.gemini:${HOST_HOME:?run scripts/install.sh}/.gemini
       # worker state (outbox, shadow checkpoints, extension cache); test stacks point it elsewhere
       - ${LEOMAN_WORKER_STATE:-${HOST_HOME:?run scripts/install.sh}/.local/state/tether-worker}:${HOST_HOME:?run scripts/install.sh}/.local/state/tether-worker
     secrets:
@@ -788,6 +792,39 @@ fetch() {  # $1 = path in the repository, $2 = destination; embedded payload > l
 mkdir -p "$dir" && chmod 700 "$dir"
 cd "$dir"
 fresh=1; [[ ! -f .env ]] || fresh=0
+
+# A new .env next to an earlier install's database volume would lock the hub out (Postgres keeps the password it was
+# created with) and the user sees "502 Bad Gateway". Archive that old data into the backup folder and start clean.
+stale_data_aside() {
+  local proj=${COMPOSE_PROJECT_NAME:-leoman} vols=() v running stamp out img
+  docker volume inspect "${proj}_pgdata" >/dev/null 2>&1 || return 0
+  for v in pgdata redisdata; do docker volume inspect "${proj}_$v" >/dev/null 2>&1 && vols+=("${proj}_$v"); done
+  running=$(docker ps -q --filter "label=com.docker.compose.project=$proj")
+  if [[ -n $running ]]; then
+    cat >&2 <<EOF
+install.sh: an earlier LeoMan ("$proj") is still running on this host, but $dir/.env is missing.
+  If you still have its folder, run the installer with --dir <that folder> to update it instead.
+  To replace it with a new install, stop it first, then run the installer again:
+    docker stop \$(docker ps -q --filter label=com.docker.compose.project=$proj)
+  (Its data is kept: the installer saves it to $backup before starting fresh.)
+EOF
+    exit 2
+  fi
+  stamp=$(date -u +%Y%m%d-%H%M%S)
+  out="$backup/earlier-install-$stamp"
+  (umask 077 && mkdir -p "$out")
+  img=postgres:16-alpine
+  docker image inspect "$img" >/dev/null 2>&1 || docker pull -q "$img" >/dev/null 2>&1 || img=redis:7-alpine
+  say "Found data from an earlier LeoMan install (${vols[*]}) without its .env: saving it to $out"
+  for v in "${vols[@]}"; do
+    docker run --rm --network none -v "$v":/data:ro -v "$out":/out "$img" sh -c \
+      "tar -czf /out/$v.tar.gz -C /data . && chown $(id -u):$(id -g) /out/$v.tar.gz" || die "could not save volume $v to $out (nothing was removed)"
+  done
+  docker ps -aq --filter "label=com.docker.compose.project=$proj" | xargs -r docker rm >/dev/null
+  docker volume rm "${vols[@]}" >/dev/null || die "could not remove the old volumes ${vols[*]} (saved in $out)"
+  say "       Saved and removed. To go back to it later: restore those archives into the volumes and its old .env."
+}
+[[ $fresh = 0 || $load_only = 1 ]] || stale_data_aside
 # HTTPS: asked for (--https), or the default of a new install that other computers reach (--expose) and of a new
 # offline install; --http opts out. An existing install keeps what it has (HTTPS: its certificate names are refreshed).
 want_https=0
@@ -884,8 +921,9 @@ bk=$(envval LEOMAN_BACKUP_DIR)
 ws=$(envval WORKSPACE_ROOT_1)
 (umask 077 && mkdir -p "$bk/leoman-db")
 mkdir -p "$ws" "$h/.claude" "$h/.local/bin" "$h/.local/share/claude" "$h/.local/state"
+(umask 077 && mkdir -p "$h/.codex" "$h/.gemini")  # Codex / Gemini CLI homes, bind-mounted into the worker
 [[ -e "$h/.claude.json" ]] || (umask 077 && printf '{}\n' > "$h/.claude.json")
-say "Prepared $bk (backups), $ws (agent folders) and the Claude Code paths under $h"
+say "Prepared $bk (backups), $ws (agent folders) and the Claude Code / Codex / Gemini paths under $h"
 
 # §18 HTTPS front with LeoMan's private CA; machines must connect encrypted
 if [[ $want_https = 1 ]]; then
